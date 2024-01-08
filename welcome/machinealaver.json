@@ -1,6 +1,0 @@
-{"machine_info_status":{"machine_list":[
-	<%=render_collection(collection=params['machinealaver'], partial='welcome/_machinealaver.json', as_='machinealaver')%>
-
-
-],"centrale_nom":"<%=params["centrale"]["nom"]%>"}
-}

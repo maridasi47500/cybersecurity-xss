@@ -1,0 +1,1 @@
+{"shops":[<%=render_collection(collection=params['shops'], partial='welcome/_shop.html', as_='shop')%>]}

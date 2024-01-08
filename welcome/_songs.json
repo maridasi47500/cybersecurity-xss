@@ -1,2 +1,0 @@
-<%="," if paspremier else ""%>{"id":"<%=song["id"]%>","title": "<%=song["title"]%>","file":"<%=song["file"]%>"
-}
