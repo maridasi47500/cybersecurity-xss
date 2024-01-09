@@ -4,6 +4,7 @@ from myscript import Myscript
 from user import User
 from myrecording import Myrecording
 from gagnant import Gagnant
+from shop import Shop
 
 
 from song import Song
@@ -21,6 +22,7 @@ class Route():
         self.Program.set_path("./")
         self.mysession={"notice":None,"email":None,"name":None}
         self.dbScript=Myscript()
+        self.dbShop = Shop()
         self.render_figure=RenderFigure(self.Program)
         self.getparams=("id",)
     def set_post_data(self,x):
@@ -72,13 +74,20 @@ class Route():
         return self.render_figure.render_figure("welcome/index.html")
     def shops(self,search):
         print("hello action")
-        return self.render_figure.render_some_json("welcome/shops.json")
+        self.render_figure.set_param("shops",self.dbShop.getall())
+        return self.render_some_json("welcome/shops.json")
     def hello(self,search):
         print("hello action")
         return self.render_figure.render_figure("welcome/index.html")
     def newshop(self,search):
         print("hello action")
         return self.render_figure.render_figure("welcome/newshop.html")
+    def new1(self,search):
+        print("hello action")
+        getparams=("name","pic","address",)
+        myparam=self.post_data(getparams)
+        self.dbShop.create(myparam)
+        return self.render_some_json("welcome/created.json")
     def delete_user(self,params={}):
         getparams=("id",)
         myparam=self.post_data(self.getparams)
@@ -177,6 +186,7 @@ class Route():
             ROUTES={
                     '^/welcome$': self.welcome,
                     '^/newshop$': self.newshop,
+                    '^/new$': self.new1,
                     '^/shops$': self.shops,
                     '^/signin$': self.signin,
                     '^/logmeout$':self.logout,
@@ -206,7 +216,7 @@ class Route():
 
                    except Exception:  
                        self.Program.set_html(html="<p>une erreur s'est produite "+str(traceback.format_exc())+"</p><a href=\"/\">retour à l'accueil</a>")
-                   self.Program.redirect_if_not_logged_in()
+                   #self.Program.redirect_if_not_logged_in()
 
                    return self.Program
                else:
