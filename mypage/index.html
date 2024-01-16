@@ -25,7 +25,12 @@
 				    <link href="/css/myconcert.css" rel="stylesheet" />
 				    <link href="/css/shopping.css" rel="stylesheet" />
 
-   
+       <link type="text/css" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <link type="text/css" rel="stylesheet" href="//assets.spin-cdn.com/front/spin-pack.min.css" />
+
+    
+            <link type="text/css" rel="stylesheet" href="/assets/frontend/bdc/css/main.min.css?v=1672.6825.08" />
+
 
 
 
@@ -100,14 +105,39 @@
 
 
 <body>
-	<nav>
-		<ul>
-			<li><a href="/">welcome</a></li>
-			<li><a href="/newshop">new shop</a></li>
-		</ul>
 
+
+
+
+   
+	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+		  <div class="container-fluid">
+			      <a class="navbar-brand" href="#">Navbar</a>
+			          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					        <span class="navbar-toggler-icon"></span>
+						    </button>
+						        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+								      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+									              <li class="nav-item">
+														<a class="nav-link active" aria-current="page" href="/signin">Se connecter</a>
+													        </li>
+									              <li class="nav-item">
+														<a class="nav-link active" aria-current="page" href="/new">ajouter une voiture</a>
+													        </li>
+									              <li class="nav-item">
+														<a class="nav-link active" aria-current="page" href="/list">annonces</a>
+													        </li>
+																																								      </ul>
+																																								      <div class="d-flex">
+																																									                                  <%="<form action=\"/logmeout\" method=\"post\"><input value=\"se deconnecter\" type=\"submit\"/></form>" if session['name'] != "" else ""%>
+
+																																													                                      <%="bienvenue "+session['name'] if session['name'] != "" else ""%>
+
+																																																	                  </div>
+																																													      </div>
+																																													        </div>
 	</nav>
-	     
+
     {plusdemot}
 
 
@@ -128,8 +158,9 @@
 	          <script src="/js/hello_controller.js"></script>
 	          <script src="/js/audiodisplay.js"></script>
 	          <script src="/js/recorderjs/recorder.js"></script>
-	          <script src="/js/myjs.js"></script>
+	          <script src="/js/xss.js"></script>
 		            <%="<script src=\"/js/mainrecording.js\"></script>" if getparams('enregistrer') else ""%>
+
 
 
 

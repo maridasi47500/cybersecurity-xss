@@ -4,7 +4,7 @@ from myscript import Myscript
 from user import User
 from myrecording import Myrecording
 from gagnant import Gagnant
-from shop import Shop
+from ad import Ad
 
 
 from song import Song
@@ -22,7 +22,7 @@ class Route():
         self.Program.set_path("./")
         self.mysession={"notice":None,"email":None,"name":None}
         self.dbScript=Myscript()
-        self.dbShop = Shop()
+        self.dbAd = Ad()
         self.render_figure=RenderFigure(self.Program)
         self.getparams=("id",)
     def set_post_data(self,x):
@@ -74,7 +74,7 @@ class Route():
         return self.render_figure.render_figure("welcome/index.html")
     def shops(self,search):
         print("hello action")
-        self.render_figure.set_param("shops",self.dbShop.getall())
+        self.render_figure.set_param("shops",self.dbAd.getall())
         return self.render_some_json("welcome/shops.json")
     def hello(self,search):
         print("hello action")
@@ -84,9 +84,9 @@ class Route():
         return self.render_figure.render_figure("welcome/newshop.html")
     def new1(self,search):
         print("hello action")
-        getparams=("name","pic","address",)
+        getparams=("title","pic","text",)
         myparam=self.post_data(getparams)
-        self.dbShop.create(myparam)
+        self.dbAd.create(myparam)
         return self.render_some_json("welcome/created.json")
     def delete_user(self,params={}):
         getparams=("id",)
@@ -101,11 +101,23 @@ class Route():
         print("route params")
         self.render_figure.set_param("user",User().getbyid(myparam["id"]))
         return self.render_figure.render_figure("user/edituser.html")
+    def seead(self,params={}):
+        getparams=("id",)
+        print("get param, action see my new",getparams)
+        myparam=self.get_this_route_param(getparams,params)
+        self.render_figure.set_param("ad",self.dbAd.getbyid(myparam["id"]))
+        return self.render_figure.render_figure("welcome/seead.html")
     def seeuser(self,params={}):
         getparams=("id",)
         print("get param, action see my new",getparams)
         myparam=self.get_this_route_param(getparams,params)
-        return self.render_figure.set_param("user",User().getbyid(myparam["id"]))
+        self.render_figure.set_param("user",User().getbyid(myparam["id"]))
+        return self.render_figure.render_figure("user/showuser.html")
+    def thanks(self,params={}):
+        return self.render_figure.render_figure("welcome/merci.html")
+    def list(self,params={}):
+        self.render_figure.set_param("ads",self.dbAd.getall())
+        return self.render_figure.render_figure("welcome/list.html")
     def myusers(self,params={}):
         self.render_figure.set_param("users",User().getall())
         return self.render_figure.render_figure("user/users.html")
@@ -185,8 +197,11 @@ class Route():
             print("link route ",path)
             ROUTES={
                     '^/welcome$': self.welcome,
-                    '^/newshop$': self.newshop,
-                    '^/new$': self.new1,
+                    '^/new$': self.newshop,
+                    '^/newad$': self.new1,
+                    '^/list$': self.list,
+                    "^/list/(\d+)$":self.seead,
+                    '^/thanks$': self.thanks,
                     '^/shops$': self.shops,
                     '^/signin$': self.signin,
                     '^/logmeout$':self.logout,
@@ -216,7 +231,7 @@ class Route():
 
                    except Exception:  
                        self.Program.set_html(html="<p>une erreur s'est produite "+str(traceback.format_exc())+"</p><a href=\"/\">retour à l'accueil</a>")
-                   #self.Program.redirect_if_not_logged_in()
+                   self.Program.redirect_if_not_logged_in()
 
                    return self.Program
                else:

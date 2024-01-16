@@ -1,17 +1,26 @@
-<form action="/new" method="post">
+<div class="card">
+	  <h5 class="card-header">Formulaire</h5>
+	    <div class="card-body">
+		    <p class="card-text">remplissez ce formulaire pour vendre votre voiture</p>
+
+		    <form action="/newad" method="post">
 	<div class="field">
-		<label for="name">nom</label>
-		<input type="text" name="name" id="name"/>
+		<label for="titlead">Voiture</label>
+		<input type="text" name="title" id="titlead"/>
 	</div>
 	<div class="field">
-		<label for="pic">pic</label>
-		<input type="file" name="pic" id="pic"/>
+		<label for="picad">pic</label>
+		<input type="file" name="pic" id="picad"/>
 	</div>
 	<div class="field">
-		<label for="address">adresse</label>
-		<input type="text" name="address" id="address"/>
+		<label for="textad">Description</label>
+		<textarea name="text" id="textad"></textarea>
 	</div>
 	<div class="actions">
-		<input type="submit" value="creer nouveau magasin" name="seconnecter"/>
+		<input type="submit" value="creer 1 nouvelle annonce" name="seconnecter"/>
 	</div>
 </form>
+<p class="card-text"><a href="javascript:void(0)" id="myxss">faire une attaque xss (cross side scripting)</a></p>
+
+	    </div>
+</div>
