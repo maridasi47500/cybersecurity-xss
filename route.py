@@ -16,6 +16,30 @@ import traceback
 import sys
 
 class Route():
+    def get_routes(self):
+        routes={
+                    '^/get_my_cookie$': self.get_my_cookie,
+                    '^/welcome$': self.welcome,
+                    '^/new$': self.newshop,
+                    '^/newad$': self.new1,
+                    '^/list$': self.list,
+                    "^/list/(\d+)$":self.seead,
+                    '^/thanks$': self.thanks,
+                    '^/shops$': self.shops,
+                    '^/signin$': self.signin,
+                    '^/logmeout$':self.logout,
+                                        '^/save_user$':self.save_user,
+                                                            '^/update_user$':self.update_user,
+                    "^/seeuser/([0-9]+)$":self.seeuser,
+                                        "^/edituser/([0-9]+)$":self.edit_user,
+                                                            "^/deleteuser/([0-9]+)$":self.delete_user,
+                                                                                '^/login$':self.login,
+
+                                                                                                    '^/users$':self.myusers,
+                    '^/$': self.hello
+
+                    }
+        return routes
     def __init__(self):
         self.dbUsers=User()
         self.Program=Directory("premiere radio")
@@ -25,6 +49,7 @@ class Route():
         self.dbAd = Ad()
         self.render_figure=RenderFigure(self.Program)
         self.getparams=("id",)
+
     def set_post_data(self,x):
         self.post_data=x
     def get_post_data(self):
@@ -79,6 +104,10 @@ class Route():
     def hello(self,search):
         print("hello action")
         return self.render_figure.render_figure("welcome/index.html")
+    def get_my_cookie(self,hey):
+        print("hello action")
+        self.render_figure.set_param("cookie",str(self.Program.get_session()))
+        return self.render_some_json("welcome/get_cookie.json")
     def newshop(self,search):
         print("hello action")
         return self.render_figure.render_figure("welcome/newshop.html")
@@ -195,27 +224,8 @@ class Route():
         elif path:
             path=path.split("?")[0]
             print("link route ",path)
-            ROUTES={
-                    '^/welcome$': self.welcome,
-                    '^/new$': self.newshop,
-                    '^/newad$': self.new1,
-                    '^/list$': self.list,
-                    "^/list/(\d+)$":self.seead,
-                    '^/thanks$': self.thanks,
-                    '^/shops$': self.shops,
-                    '^/signin$': self.signin,
-                    '^/logmeout$':self.logout,
-                                        '^/save_user$':self.save_user,
-                                                            '^/update_user$':self.update_user,
-                    "^/seeuser/([0-9]+)$":self.seeuser,
-                                        "^/edituser/([0-9]+)$":self.edit_user,
-                                                            "^/deleteuser/([0-9]+)$":self.delete_user,
-                                                                                '^/login$':self.login,
+            ROUTES=self.get_routes()
 
-                                                                                                    '^/users$':self.myusers,
-                    '^/$': self.hello
-
-                    }
             REDIRECT={"/save_user": "/welcome"}
             for route in ROUTES:
                print("pattern=",route)

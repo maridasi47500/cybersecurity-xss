@@ -1,2 +1,4 @@
 uploads/*
 __pycache__/*
+hackerDb.db
+myFileDb.db

